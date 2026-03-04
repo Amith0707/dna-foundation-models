@@ -1,7 +1,7 @@
 # DNABERT-2 Integration for DeepChem
 
 This repo documents work for integrating DNABERT-2 into DeepChem.
-A cleaned up Kaggle notebook will be linked here once ready.
+**Kaggle Notebook:** https://www.kaggle.com/code/amith0705/dnabert2-test
 
 ---
 
@@ -125,15 +125,10 @@ producing wrong gradients. This matches exactly what `HuggingFaceModel._prepare_
 
 | Metric | Score |
 |--------|-------|
-| Test Accuracy | 77.1% |
-| ROC AUC | 0.935 |
-| Non-promoter precision | 0.69 |
-| Non-promoter recall | 0.99 |
-| Promoter precision | 0.98 |
-| Promoter recall | 0.55 |
+| Test Accuracy | 77.02% |
+| ROC AUC | 0.9319 |
 
-The low promoter recall is a class imbalance issue — the dataset has significantly more
-non-promoter sequences. Adding class weights to the loss is the next step.
+The gap between the two runs is expected  the 200-sample run used a frozen encoder with only the classifier head trainable, which reduces overfitting on small data. The 60k run fine-tunes the full model. The lower promoter recall is a class imbalance issue in the dataset. Adding class weights to the loss is the next step.
 
 ---
 
