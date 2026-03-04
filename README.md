@@ -19,7 +19,7 @@ Paper: [arXiv:2306.15006](https://arxiv.org/abs/2306.15006)
 ## What's been done so far
 
 A `DNABERT2` class that subclasses `HuggingFaceModel` following the same pattern as `Chemberta`.
-It supports five tasks out of the box:
+It supports five tasks:
 
 - `classification` — binary or multi-class sequence classification
 - `regression` — single-target scalar regression  
@@ -48,8 +48,8 @@ Fix: call `AutoModel.from_pretrained` as a warm-up before anything else. The ini
 need the file on disk.
 ```python
 try:
-    _ = AutoModel.from_pretrained(model_name, trust_remote_code=True)
-    del _
+    temp= AutoModel.from_pretrained(model_name, trust_remote_code=True)
+    del temp
 except Exception:
     pass
 ```
@@ -116,6 +116,8 @@ producing wrong gradients. This matches exactly what `HuggingFaceModel._prepare_
 
 ### 200 samples, CPU, frozen encoder + pooler trainable (592k params)
 
+(Selected 200 random samples from the dataset with promoters and non-promoters equally distribuited 100 to check whether the model was learning)
+
 | Metric | Score |
 |--------|-------|
 | Test Accuracy | 87.5% |
@@ -128,7 +130,7 @@ producing wrong gradients. This matches exactly what `HuggingFaceModel._prepare_
 | Test Accuracy | 77.02% |
 | ROC AUC | 0.9319 |
 
-The gap between the two runs is expected  the 200-sample run used a frozen encoder with only the classifier head trainable, which reduces overfitting on small data. The 60k run fine-tunes the full model. The lower promoter recall is a class imbalance issue in the dataset. Adding class weights to the loss is the next step.
+Both runs used the same setup — frozen encoder with only the pooler and classifier head trainable (592k / 117M params). The difference in accuracy is expected given the dataset size.
 
 ---
 

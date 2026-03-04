@@ -29,9 +29,6 @@ class DNAFeaturizer(HuggingFaceFeaturizer):
             Name of the Hugging Face DNA tokenizer to use.
         max_length : int, optional (default 512)
             Maximum sequence length for padding and truncation.
-        trust_remote_code : bool, optional (default False)
-            Whether to trust remote code when loading the tokenizer.
-            Required for some models such as DNABERT-2.
         """
 
         tokenizer = AutoTokenizer.from_pretrained(
